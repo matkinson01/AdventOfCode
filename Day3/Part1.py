@@ -1,12 +1,15 @@
 import csv
 
+# Open the 'data.txt' file in read mode and read the data into a string
 with open('data.txt', 'r') as file:
     data = file.read()
 
+# Split the string into a list of rows
 rows = data.split('\n')
-
+# Create a CSV reader object to iterate over the rows in the list
 reader = csv.reader(rows)
 
+# Define a dictionary containing the letter-prioritized values of each letter in the English alphabet
 letterPrioritizedValues = {
     'a': 1,
     'b': 2,
@@ -62,16 +65,26 @@ letterPrioritizedValues = {
     'Z': 52
 }
 
+# Initialize the total variable
 total = 0
 
+# Loop over each row in the reader
 for row in reader:
+    # Loop over each field (i.e. item) in the row
     for field in row:
+        # Calculate the length of the field
+        # Split the field into two parts (i.e. two rucksacks)
         length = len(field)
         rucksack1 = set(field[:length//2])
         rucksack2 = set(field[length//2:])
 
+        # Find the items that are present in both rucksacks
         duplicate = rucksack1.intersection(rucksack2)
+        # Join the duplicated items together into a string
         letter = "".join(duplicate)
+        # Look up the value of the `letter` in the `letterPrioritizedValues` dictionary
+        # and add it to the `total`
         total += letterPrioritizedValues[letter]
 
+# Print the total value of the items in the rucksacks
 print(total)

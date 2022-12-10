@@ -1,12 +1,15 @@
 import csv
 
+# Open the 'data.txt' file in read mode and read the data into a string
 with open('data.txt', 'r') as file:
     data = file.read()
 
+# Split the string into a list of rows
 rows = data.split('\n')
-
+# Create a CSV reader object to iterate over the rows in the list
 reader = csv.reader(rows)
 
+# Define a dictionary containing the letter-prioritized values of each letter in the English alphabet
 letterPrioritizedValues = {
     'a': 1,
     'b': 2,
@@ -60,18 +63,30 @@ letterPrioritizedValues = {
     'X': 50,
     'Y': 51,
     'Z': 52
-}
+    }
 
+# Initialize the total variable
 total = 0
 
-for row in reader:
-    for field in row:
-        length = len(field)
-        rucksack1 = set(field[:length//2])
-        rucksack2 = set(field[length//2:])
+# Loop over the rows in groups of three (i.e. one group for each elf)
+for i in range(0, len(rows), 3):
+    elfGroup = rows[i:i+3]
+    badge = 0
 
-        duplicate = rucksack1.intersection(rucksack2)
-        letter = "".join(duplicate)
-        total += letterPrioritizedValues[letter]
+    # Loop over the items in each elf's rucksacks in groups of three
+    for i in range(0, len(elfGroup), 3):
+        # Create sets of items for each elf
+        elf1 = set(elfGroup[i])
+        elf2 = set(elfGroup[i+1])
+        elf3 = set(elfGroup[i+2])
 
+        # Find the items that are present in all three elf's rucksacks
+        duplicate = elf1.intersection(elf2, elf3)
+        # Join the duplicated items together into a string, look up the value in the dictionary 
+        # and add it to the badge
+        badge += letterPrioritizedValues["".join(duplicate)]
+    
+    # Add the value of the current elf's badge to the `total`
+    total += badge
+ # Print the total value of all the elves' badges
 print(total)
