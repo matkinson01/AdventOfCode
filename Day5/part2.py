@@ -24,9 +24,11 @@ boxPositions = {
 }
 
 def moveBoxes(numberToMove, moveFrom, moveTo):
+    movingBoxes = []
     for i in range(0, numberToMove, 1):
         movingBox = boxPositions[moveFrom].pop(-1)
-        boxPositions[moveTo].append(movingBox)
+        movingBoxes.insert(0, movingBox)
+    boxPositions[moveTo].extend(movingBoxes)
     return boxPositions
         
 def topBoxes():
